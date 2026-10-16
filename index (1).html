@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Challenge ÉCLAT — Éclat au Féminin</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Jost:wght@300;400;500&family=Caveat:wght@500&display=swap" rel="stylesheet">
+<style>
+/* ===== COULEURS & POLICES : modifiables ici ===== */
+:root{--bg:#f7f1e8;--card:#fffaf3;--line:#e6d9c6;--ink:#4a3428;--soft:#8a7566;--rose:#ecd3cb;--gold:#b8924f;--brown:#6b4a38;
+--serif:'Cormorant Garamond',Georgia,serif;--sans:'Jost',system-ui,sans-serif;--hand:'Caveat',cursive;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#2a1f1a;--card:#35281f;--line:#52413414;--ink:#f3e8da;--soft:#c2ad9a;--rose:#5a423d;--brown:#e6cfb4}}
+:root[data-theme="dark"]{--bg:#2a1f1a;--card:#35281f;--line:#524134;--ink:#f3e8da;--soft:#c2ad9a;--rose:#5a423d;--brown:#e6cfb4}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.55 var(--sans)}
+main{max-width:520px;margin:0 auto;padding:22px 20px 110px}
+h1,h2,h3{font-family:var(--serif);font-weight:500;margin:0;line-height:1.1}
+h1{font-size:46px;letter-spacing:.01em}h2{font-size:32px}h3{font-size:19px;font-family:var(--sans);font-weight:500;letter-spacing:.02em;margin:26px 0 8px}
+.hand{font-family:var(--hand);color:var(--gold);font-size:22px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;margin:14px 0}
+.btn{display:block;width:100%;border:0;border-radius:40px;padding:16px;font:500 15px var(--sans);letter-spacing:.08em;background:var(--brown);color:#fffaf3;cursor:pointer;margin-top:18px}
+.btn.alt{background:transparent;color:var(--brown);border:1px solid var(--gold)}
+.btn:focus-visible,textarea:focus-visible,input:focus-visible,.chk:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.chk{display:flex;gap:12px;align-items:flex-start;padding:9px 0;cursor:pointer;background:none;border:0;width:100%;text-align:left;font:inherit;color:inherit}
+.chk i{flex:none;width:24px;height:24px;border:1.5px solid var(--gold);border-radius:50%;display:grid;place-items:center;font-style:normal;color:transparent;transition:.25s}
+.chk.on i{background:var(--gold);color:#fff}
+.big{padding:14px;border-radius:14px;background:var(--rose);margin:10px 0}
+textarea,input[type=date],input[type=time]{width:100%;border:1px solid var(--line);background:var(--bg);border-radius:14px;padding:12px;font:16px/1.5 var(--sans);color:var(--ink);resize:vertical}
+.bar{height:6px;background:var(--line);border-radius:9px;overflow:hidden}.bar b{display:block;height:100%;background:linear-gradient(90deg,var(--gold),var(--brown));transition:width .6s}
+.top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;color:var(--soft);font-size:14px}
+.phase{font-family:var(--hand);font-size:22px;color:var(--gold)}
+.int{font-family:var(--serif);font-style:italic;font-size:22px;margin:10px 0 6px}
+.grid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin:10px 0 18px}
+.dot{aspect-ratio:1;border-radius:50%;border:1px solid var(--line);background:var(--card);display:grid;place-items:center;font:500 14px var(--sans);color:var(--soft);cursor:pointer;padding:0}
+.dot.done{background:var(--gold);color:#fff;border-color:var(--gold)}.dot.cur{border:2px solid var(--brown);color:var(--brown)}.dot.lock{opacity:.4;cursor:default}
+.sl{margin:14px 0}.sl label{display:flex;justify-content:space-between;font-size:15px}.sl input{width:100%;accent-color:var(--gold)}
+.cmp{margin:12px 0}.cmp .r{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--soft)}.cmp .r span{width:22px;text-align:right}.cmp .r div{height:8px;border-radius:9px;transition:width .8s}
+nav{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--line);display:flex;justify-content:center;gap:40px;padding:10px 0 calc(10px + env(safe-area-inset-bottom,0px))}
+nav button{background:none;border:0;font:500 14px var(--sans);color:var(--soft);padding:8px 14px;cursor:pointer}nav button.on{color:var(--brown);border-bottom:2px solid var(--gold)}
+.ban{background:var(--rose);border-radius:14px;padding:14px;margin:12px 0}
+.ov{position:fixed;inset:0;background:color-mix(in srgb,var(--bg) 88%,transparent);display:grid;place-items:center;z-index:9;animation:fo 1.7s forwards;text-align:center}
+.ov svg{width:90px}.ov circle,.ov path{fill:none;stroke:var(--gold);stroke-width:2;stroke-dasharray:200;stroke-dashoffset:200;animation:dr .9s .1s forwards}
+@keyframes dr{to{stroke-dashoffset:0}}@keyframes fo{0%,80%{opacity:1}100%{opacity:0;visibility:hidden}}
+@media (prefers-reduced-motion:reduce){.ov circle,.ov path{animation:none;stroke-dashoffset:0}.bar b,.cmp .r div{transition:none}}
+.home{min-height:80vh;display:flex;flex-direction:column;justify-content:center;text-align:center}
+.brand{letter-spacing:.3em;font-size:12px;color:var(--gold)}
+.chip{border:1px solid var(--gold);background:var(--card);color:var(--ink);border-radius:30px;padding:9px 14px;margin:4px 6px 4px 0;font:14px var(--sans);cursor:pointer}.chip.on{background:var(--gold);color:#fff}
+
+/* ===== ÉLÉGANCE ===== */
+body{background:radial-gradient(120% 50% at 50% 0,color-mix(in srgb,var(--card) 70%,var(--bg)),var(--bg)) fixed}
+main>*{animation:up .5s both}@keyframes up{from{opacity:0;transform:translateY(8px)}}
+h3{font:500 11px var(--sans);letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin:38px 0 14px;display:flex;align-items:center;gap:12px}
+h3:after{content:"";flex:1;height:1px;background:var(--line)}
+.card{border-radius:22px;padding:22px;box-shadow:0 14px 30px -22px rgba(107,74,56,.45)}
+.act{background:var(--card);border:1px solid var(--line);border-radius:26px;padding:26px 22px 14px;box-shadow:0 18px 36px -24px rgba(107,74,56,.5)}
+.act .tm{font:500 11px var(--sans);letter-spacing:.18em;text-transform:uppercase;color:var(--gold)}
+.act .hd{font:500 32px/1.1 var(--serif);margin:10px 0 18px}
+.act ol{list-style:none;margin:0;padding:0}.act li{display:flex;gap:14px;padding:13px 0;border-top:1px solid var(--line)}
+.act li b{font:italic 500 22px/1 var(--serif);color:var(--gold);width:16px}
+.btn{background:linear-gradient(135deg,#7d5842,#5a3d2d);box-shadow:0 14px 26px -16px rgba(90,61,45,.8)}
+.chk{padding:12px 0}.chk i{width:26px;height:26px}
+textarea,input[type=date],input[type=text]{background:var(--card);border-radius:16px;padding:14px}
+.int{font-size:24px;line-height:1.25}
+nav{backdrop-filter:blur(10px)}
+.socle{background:linear-gradient(160deg,#6b4a38,#472f23);color:#fff6ea;border-radius:26px;padding:26px 22px 14px;margin:38px 0 0;box-shadow:0 20px 40px -24px rgba(71,47,35,.8)}
+.socle .st{font:500 30px/1.1 var(--serif);margin:6px 0 4px}.socle .chk{color:#fff6ea;border-top:1px solid rgba(255,246,234,.14)}.socle .chk i{border-color:#e2c78f}.socle .chk.on i{background:#e2c78f;color:#472f23}.socle .bar b{background:#e2c78f}
+.steps{display:flex;gap:6px;margin:22px 0 4px}.stp{flex:1;border:0;background:none;font:500 12px var(--sans);color:var(--soft);padding:8px 0;border-bottom:2px solid var(--line);cursor:pointer}.stp i{display:block;font:italic 500 20px var(--serif)}.stp.on{color:var(--brown);border-color:var(--gold)}.stp.ok{border-color:var(--gold)}
+.more{margin:10px 0;color:var(--soft);font-size:14px}.more summary{cursor:pointer;color:var(--gold)}
+.medal{font:500 12px var(--sans);color:var(--soft)}.medal.on{color:var(--gold)}
+.pills{display:grid;gap:8px;margin:22px 0 4px}.pills div{border:1px solid var(--line);background:var(--card);border-radius:30px;padding:12px 18px;text-align:left}
+/* ===== LISIBILITÉ ===== */
+:root{--gold:#a67f3c;--soft:#6a5547}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--gold:#d4b06a;--soft:#c9b5a3}}
+:root[data-theme="dark"]{--gold:#d4b06a;--soft:#c9b5a3}
+body{font-size:17px}::placeholder{color:#8f7a6b;opacity:1}
+</style></head><body><main id="app"></main><nav id="nav" hidden></nav>
+<script>
+/* ===== LES 21 JOURS : modifiables ici =====
+ [titre, intention, explication, action, question] */
+const DAYS=[
+["Mon point de départ","Commence par une victoire, pas par un plan.","Aujourd’hui, tu allèges ta tête et tu coches ta première victoire.","En 15 minutes : 1) Écris ci-dessous 5 petites choses qui traînent (un rendez-vous à prendre, un mail, un bouton à recoudre…). 2) Choisis la plus rapide et fais-la maintenant (10 minutes max). 3) Écris ta phrase « Dans 21 jours, je veux sentir que… ».","Qu’as-tu ressenti en terminant cette chose qui traînait, et que veux-tu garder de ce sentiment pour demain ?"],
+["Je range ce qui m’encombre","Un espace en ordre libère de l’énergie mentale.","Pas besoin de tout ranger. Un seul endroit, bien choisi.","Mets un minuteur de 20 minutes et remets en ordre UN espace précis qui te pèse (sac, bureau, tiroir, entrée, boîte mail). Jette, range, termine.","Qu’est-ce que ce désordre représentait pour toi, et qu’est-ce que tu ressens en le voyant réglé ?"],
+["Je bouge","Ton énergie se crée, elle ne s’attend pas.","Le mouvement est le raccourci le plus rapide vers un esprit clair.","Bouge 20 à 30 minutes : marche rapide, danse, yoga, sport, escaliers. Note ton énergie sur 10 avant et après.","Quelle était ton énergie avant et après ? Quel mouvement as-tu envie de garder cette semaine ?"],
+["Je récupère 30 minutes","Tu n’as pas besoin de plus de temps. Tu dois décider ce qui mérite le tien.","Trente minutes par jour, c’est 3 heures et demie par semaine.","Repère UNE activité à supprimer, réduire, déléguer ou déplacer, puis passe à l’acte aujourd’hui (message envoyé, abonnement coupé, tâche confiée).","Qu’est-ce qui prenait ton temps sans te rapporter ? À quoi ces 30 minutes vont-elles servir ?"],
+["Je vide ma tête","Ce qui est écrit pèse moins que ce qui tourne en boucle.","Ton cerveau n’est pas fait pour stocker, mais pour décider.","10 minutes de brain dump : écris tout ce qui t’occupe l’esprit, sans filtre. Classe ensuite chaque ligne : À faire / À décider / À déléguer / À lâcher.","Quelle est la chose qui revient le plus souvent dans ta liste, et que veut-elle vraiment te dire ?"],
+["Je me choisis concrètement","Te choisir, ça se voit dans ton agenda.","Un rendez-vous avec toi, pas une bonne intention.","Bloque 30 minutes dans ton agenda uniquement pour toi, et utilise-les vraiment aujourd’hui ou demain. Téléphone en mode avion si possible.","Qu’as-tu fait de ces 30 minutes, et qu’est-ce qui t’a le plus manqué ou le plus fait du bien ?"],
+["Mon premier bilan","Une semaine suffit pour voir bouger quelque chose.","Observer ce qui a changé, c’est ce qui crée l’élan.","Relis tes 6 jours. Entoure ta victoire de la semaine et choisis UNE action à garder chaque jour la semaine prochaine : elle s’ajoutera à ton action ÉCLAT du jour.","Quelle est ta victoire de la semaine, et qu’est-ce que tu as découvert sur toi ?"],
+["Mes 3 priorités","Tout n’est pas prioritaire. Toi non plus tu ne peux pas tout porter.","Quand tout compte, rien n’avance.","Choisis les 3 choses qui comptent vraiment en ce moment. Reporte au moins 2 tâches secondaires de ta semaine.","Laquelle de ces 3 petites actions t’a le plus fait avancer, et que feras-tu demain pour elle ?"],
+["Je dis non","Un non clair protège un oui sincère.","Ce n’est pas égoïste, c’est organisé.","Dis non, reporte ou délègue UNE chose précise qui n’a plus sa place dans ta vie. Utilise une phrase simple : « Je ne peux pas, mais merci d’avoir pensé à moi. »","Qu’est-ce qui était le plus difficile à dire, et qu’as-tu gagné en le disant ?"],
+["Mon bloc pour moi","Ton attention est ta ressource la plus précieuse.","Quarante-cinq minutes de vraie concentration valent trois heures dispersées.","45 minutes sans téléphone sur quelque chose d’important pour toi (projet, lecture, formation, démarche). Téléphone dans une autre pièce.","Qu’est-ce que tu as réussi à faire en 45 minutes que tu repoussais depuis des semaines ?"],
+["Je tiens une promesse","La discipline, c’est devenir une femme sur qui tu peux compter.","Chaque promesse tenue renforce ta confiance en toi.","Choisis une petite promesse que tu te fais depuis longtemps (appeler, trier, t’inscrire, t’acheter, commencer) et tiens-la aujourd’hui.","Quelle promesse as-tu tenue, et quelle est la prochaine que tu es prête à te faire ?"],
+["Ma féminité","Pas pour plaire. Pour te reconnecter à toi.","Ta féminité n’est pas un look, c’est une manière d’habiter ton corps.","Consacre 20 à 30 minutes à une action qui te reconnecte à ta féminité : prendre soin de ta peau, choisir une tenue qui te va, danser, parfum, rendez-vous beauté, soin.","Qu’est-ce qui te fait te sentir pleinement femme, et à quelle fréquence te l’autorises-tu ?"],
+["Mon ambition","Ton ambition mérite des actes, pas seulement des idées.","Un projet avance par des gestes, pas par des réflexions.","30 minutes sur un projet que tu veux vraiment construire. Fais-le avancer : écris, appelle, crée, cherche, publie. Pas seulement y penser.","Quel projet as-tu fait avancer, et quelle est la prochaine étape concrète ?"],
+["Je fais ce que je reporte","Ce que tu repousses prend plus de place que ce que tu fais.","Une action repoussée pèse plus lourd que sa réalisation.","Choisis une action repoussée depuis trop longtemps et réalise-la : rendez-vous à prendre, message à envoyer, démarche, publication, demande à formuler. Puis choisis une 2e action à garder chaque jour jusqu’au Jour 21 (ci-dessous).","Pourquoi repoussais-tu cela, et que ressens-tu maintenant que c’est fait ?"],
+["Une décision","Décider, c’est avancer, même imparfaitement.","Une décision imparfaite vaut mieux qu’une hésitation sans fin.","Prends une décision que tu repousses. Écris-la, donne-toi une date pour l’appliquer et fais le premier geste aujourd’hui.","Quelle décision as-tu prise, et que s’est-il passé dans ton corps quand tu l’as prise ?"],
+["Une action courageuse","Le courage, c’est avancer avec la petite peur.","L’inconfort est le signe que tu grandis.","Fais une action légèrement inconfortable mais importante : demander, proposer, te montrer, négocier, poser une limite. Choisis-la le matin.","Qu’est-ce que tu as osé, et qu’est-ce que cela te prouve de toi ?"],
+["Mon projet","L’élan se construit par la constance.","Deux séances valent mieux qu’une grande intention.","30 minutes de concentration réelle sur quelque chose que tu veux construire. Définis d’abord ce que tu veux avoir terminé en 30 minutes.","Qu’as-tu produit, et quel rythme réaliste peux-tu tenir chaque semaine ?"],
+["Ma vie qui me ressemble","Une vision réaliste est plus puissante qu’une vision parfaite.","Pas un tableau Pinterest. Une vraie journée, avec tes vraies contraintes.","Décris une journée réaliste qui te ressemble, du réveil au coucher : famille, travail, couple, corps, temps pour toi, projets, repos. Repère UNE chose réalisable dès cette semaine, et fais-la.","Quelle est la plus grande différence entre cette journée et ta vie actuelle, et quel premier pas la rapproche ?"],
+["Mes 5 non-négociables","Ce que tu protèges définit ce que tu construis.","Cinq choses, pas quinze. Celles sans lesquelles tu ne te reconnais plus.","Définis les 5 éléments que tu veux protéger dans ta vie (sommeil, mouvement, temps seule, projet, couple, etc.). Écris-les ci-dessous.","Pour chaque non-négociable : comment le protéger concrètement cette semaine ?"],
+["Ma nouvelle règle","Une règle claire t’évite de renégocier avec toi-même.","Une seule règle, mais que tu tiens.","Crée une règle personnelle pour la suite (ex. : « Je ne dis plus oui immédiatement », « Je protège mon temps », « Je fais avancer mon projet chaque semaine »). Note-la sur ton téléphone ou ton frigo.","Quelle règle, formulée simplement, te ferait vraiment avancer dans les trois prochains mois ?"],
+["Je regarde le chemin parcouru","Ton objectif n’est pas de devenir parfaite. Ton objectif est de devenir intentionnelle.","Tu as agi pendant 21 jours. Regarde ce qui a bougé.","Refais ton évaluation, puis complète ton bilan ci-dessous. Compare avec le Jour 1.","Quelle est la prochaine décision que la femme que tu veux devenir prendrait aujourd’hui ?"]];
+/* ===== IDÉES CLIQUABLES PAR JOUR ===== */
+const EX=[["Prendre un rendez-vous","Répondre à un mail en attente","Réparer un petit truc","Appeler quelqu’un","Ranger un coin"],
+["Mon sac et mes poches","Mon bureau ou ma table","Ma boîte mail (20 mails)","L’entrée ou un tiroir"],
+["Marche rapide dehors","Danse sur 3 morceaux","Yoga en vidéo","Escaliers + étirements"],
+["Couper un abonnement","Déléguer une tâche à la maison","Fixer un jour pour une corvée","Dire non à une sollicitation"],
+["Au calme, avec un minuteur","Dans la voiture avant de rentrer","Dans les notes de mon téléphone"],
+["Bain ou douche lente","Café seule, sans écran","Marche seule","Lecture ou série pour moi"],
+["Mon mouvement","Mon bloc pour moi","Mon rangement du soir","Mon créneau projet"],
+["Ma santé","Ma famille","Mon projet pro","Mon couple","Mon argent","Mon temps pour moi"],
+["Refuser une invitation","Décliner une demande au travail","Déléguer une corvée","Reporter un engagement"],
+["Avancer mon projet","Me former ou lire","Faire une démarche importante","Préparer un dossier"],
+["Prendre un rendez-vous médical","Appeler quelqu’un","M’inscrire à une activité","Trier mes papiers ou photos"],
+["Soin visage ou corps","Une tenue qui me plaît","Rendez-vous coiffeur ou beauté","Danser sur ma musique"],
+["Écrire ma prochaine étape","Contacter une personne clé","Créer une première version","Publier quelque chose"],
+["Envoyer le message en attente","Prendre le rendez-vous","Régler la démarche","Demander ce que je n’ose pas"],
+["Une décision pro","Une décision de couple ou famille","Une décision d’argent","Une décision de santé"],
+["Demander un service ou une augmentation","Proposer mon idée à voix haute","Poser une limite claire","Me montrer en public"],
+["Avancer une étape clé","Écrire un premier jet","Préparer le mois prochain","Tester une idée"],
+["Une matinée sans précipitation","Un moment à deux","Une soirée de repos","30 min de projet dans ma semaine"],
+[],
+["Je ne dis plus oui immédiatement","Je protège mon temps","Je fais avancer mon projet chaque semaine","Je prends soin de moi même en semaine chargée"],[]];
+const TOOLS={1:[["La chose que je fais maintenant",1],["Dans 21 jours, je veux sentir que…",2]],5:[["Je vide tout (10 min)",5],["À faire",2],["À décider",2],["À déléguer",2],["À lâcher",2]],
+7:[["Ma victoire de la semaine",2]],
+8:[["Priorité 1",1],["→ Ma petite action pour elle, aujourd’hui (10 min max)",2],["Priorité 2",1],["→ Ma petite action pour elle, aujourd’hui (10 min max)",2],["Priorité 3",1],["→ Ma petite action pour elle, aujourd’hui (10 min max)",2]],
+19:[1,2,3,4,5].map(i=>["Non-négociable "+i,2])};
+/* ===== ACTION DU JOUR : [titre court, durée, étapes] ===== */
+const ACT=[["Ta première victoire","15 min",["Choisis UNE chose qui traîne depuis trop longtemps","Fais-la maintenant (10 min max)","Écris ta phrase « Dans 21 jours, je veux sentir que… »"]],
+["Remets un espace en ordre","20 min",["Choisis UN endroit qui te pèse (sac, bureau, tiroir, boîte mail)","Lance un minuteur de 20 minutes","Jette, range, termine"]],
+["Mets ton corps en mouvement","20–30 min",["Marche, danse, yoga ou escaliers","Note ton énergie avant, puis après"]],
+["Récupère 30 minutes","15 min",["Choisis UNE activité à supprimer, réduire, déléguer ou déplacer","Passe à l’acte aujourd’hui : message, abonnement, tâche confiée"]],
+["Vide ta tête sur papier","10 min",["Écris tout ce qui tourne dans ta tête, sans filtre","Classe : À faire, À décider, À déléguer, À lâcher"]],
+["Un rendez-vous avec toi","30 min",["Bloque 30 minutes dans ton agenda, rien que pour toi","Utilise-les vraiment, téléphone en mode avion"]],
+["Ton premier bilan","15 min",["Relis tes 6 jours et note ta victoire de la semaine","Choisis UNE action à garder chaque jour : elle s’ajoutera à ton action du jour"]],
+["Tes 3 priorités, en action","30 min",["Écris les 3 choses qui comptent vraiment en ce moment","Pour chacune, décide UNE petite action de 10 minutes","Fais les 3 actions aujourd’hui"]],
+["Dis non à une chose","10 min",["Choisis UNE chose qui n’a plus sa place","Dis non, reporte ou délègue : « Je ne peux pas, mais merci d’avoir pensé à moi. »"]],
+["45 minutes rien que pour toi","45 min",["Choisis quelque chose d’important pour toi","Téléphone dans une autre pièce, minuteur lancé"]],
+["Tiens une promesse","20 min",["Choisis une petite promesse que tu te fais depuis longtemps","Tiens-la aujourd’hui"]],
+["Reconnecte-toi à ta féminité","20–30 min",["Soin, tenue, danse, parfum, rendez-vous beauté…","Fais-le pour toi, pas pour plaire"]],
+["Fais avancer ton projet","30 min",["Choisis UN projet que tu veux vraiment construire","Avance concrètement : écris, appelle, crée, publie"]],
+["Fais ce que tu repousses","20 min",["Choisis l’action repoussée depuis trop longtemps","Réalise-la : rendez-vous, message, démarche, demande","Choisis ta 2e action à garder chaque jour (ci-dessous)"]],
+["Prends ta décision","15 min",["Choisis une décision que tu repousses","Écris-la, donne-toi une date, fais le premier geste"]],
+["Ose une action courageuse","20 min",["Choisis ce matin une action légèrement inconfortable mais importante","Fais-la, même imparfaitement"]],
+["Avance ton projet","30 min",["Définis ce que tu veux avoir terminé en 30 minutes","Concentre-toi, sans distraction"]],
+["Décris ta journée réaliste","20 min",["Du réveil au coucher : famille, travail, couple, corps, temps pour toi","Repère UNE chose faisable dès cette semaine, et fais-la"]],
+["Tes 5 non-négociables","15 min",["Choisis les 5 éléments que tu veux protéger","Écris-les ci-dessous"]],
+["Ta nouvelle règle","10 min",["Crée une règle personnelle pour la suite","Note-la sur ton téléphone ou ton frigo"]],
+["Regarde le chemin parcouru","20 min",["Refais ton évaluation","Complète ton bilan ci-dessous"]]];
+const MSG=["Bien joué","Un pas de plus","Tu avances","Belle régularité","C’est noté","Tu peux compter sur toi"];
+const KEEP=["10 minutes de mouvement","20 minutes pour moi","10 minutes de rangement","Une avancée sur mon projet","Planifier ma journée le matin"];
+const act=d=>{const [hd,tm,st]=ACT[d-1];return`<div class="act"><div class="tm">⏱ ${tm}</div><div class="hd">${hd}</div><ol>${st.map((x,i)=>`<li><b>${i+1}</b><span>${x}</span></li>`).join("")}</ol></div>`};
+const CRIT=["Énergie","Confiance","Clarté","Équilibre","Organisation","Ambition","Temps pour soi","Satisfaction générale"];
+const PH=["Retrouver","Reprendre","Rayonner"];
+const F5=["J’ai pris soin de mon environnement","J’ai avancé sur quelque chose qui compte pour moi","J’ai fait une action courageuse"];
+const FOUND=["J’ai suffisamment hydraté mon corps","J’ai bougé","J’ai pris un vrai moment pour moi","J’ai protégé mon sommeil"];
+const BILAN=[["a","Ce que j’ai compris sur moi"],["b","Ce qui a changé"],["c","Ce que je veux continuer"],["d","Mes 5 non-négociables"],["e","Ma nouvelle règle"],["g","Dans 3 mois, je veux pouvoir me dire…"]];
+
+/* ===== SAUVEGARDE (localStorage) ===== */
+const KEY="eclat_v1";let S={};
+try{S=JSON.parse(localStorage.getItem(KEY))||{}}catch(e){}
+S=Object.assign({started:0,base:null,fin:null,done:{},ans:{},proof:{},fo:{},ch:{},cm:{},pick:{},en:{},time:{},zone:"",hb:{},feel:{},fd:["","","",""],date:"",last:""},S);
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const today=()=>new Date().toISOString().slice(0,10);
+const next=()=>{for(let i=1;i<=21;i++)if(!S.done[i])return i;return 22};
+const count=()=>Object.keys(S.done).length;
+let V=S.started?(S.base?"day":"base"):"home",D=Math.min(next(),21),tmp={};
+const $=id=>document.getElementById(id),app=$("app");
+const esc=s=>String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;");
+const chk=(a,on,label,x="")=>`<button class="chk ${on?"on":""}" data-a="${a}" ${x} aria-pressed="${!!on}"><i>✓</i><span>${label}</span></button>`;
+
+function sliders(key,vals){return CRIT.map((c,i)=>`<div class="sl"><label>${c}<b id="v-${key}${i}">${vals[i]}</b></label><input type="range" min="1" max="10" value="${vals[i]}" data-s="${key}" data-i="${i}" aria-label="${c}"></div>`).join("")}
+function compare(){if(!S.base||!S.fin)return"";return`<div class="card"><h3 style="margin-top:0">Avant / Après</h3>`+CRIT.map((c,i)=>{const a=S.base[i],b=S.fin[i],d=b-a;return`<div class="cmp"><div style="display:flex;justify-content:space-between;font-size:15px">${c}<b style="color:var(--gold)">${d>0?"+":""}${d}</b></div><div class="r"><span>${a}</span><div style="width:${a*9}%;background:var(--line)"></div></div><div class="r"><span>${b}</span><div style="width:${b*9}%;background:var(--gold)"></div></div></div>`}).join("")+`</div>`}
+
+function home(){app.innerHTML=`<div class="home"><div class="brand">ÉCLAT AU FÉMININ</div><h1 style="margin:18px 0 10px">Challenge ÉCLAT</h1><div class="int">21 jours pour remettre du mouvement dans ta vie.</div><div class="pills"><div>✦ Une action par jour, de 5 à 30 minutes</div><div>✦ Tes fondations, à ta mesure</div><div>✦ Une pause ? Tu reprends où tu t’es arrêtée</div></div><button class="btn" data-a="start">COMMENCER MON JOUR 1</button><p style="color:var(--soft);margin-top:22px">Pas besoin de tout changer aujourd’hui.<br>Commence par agir sur ce qui compte.</p></div>`}
+
+function base(){tmp.b=tmp.b||CRIT.map(()=>5);app.innerHTML=`<div class="brand">AVANT DE COMMENCER</div><h2 style="margin:8px 0">Ton point de départ</h2><p>Note-toi de 1 à 10, honnêtement. Il n’y a pas de bonne note. Tu referas cette évaluation au Jour 21.</p>${sliders("b",tmp.b)}<button class="btn" data-a="savebase">C’EST PARTI</button>`}
+function path(){const n=next();app.innerHTML=`<h2>Mon parcours</h2><div class="bar" style="margin:12px 0 6px"><b style="width:${count()/21*100}%"></b></div><p style="color:var(--soft);margin:0 0 8px">${count()} / 21 jours</p>`+PH.map((p,k)=>{const c=[1,2,3,4,5,6,7].filter(j=>S.done[k*7+j]).length;return`<div class="card"><div style="display:flex;justify-content:space-between;align-items:center"><span class="phase">${p}</span><span class="medal ${c==7?"on":""}">${c==7?"✦ Étape franchie":c+" / 7"}</span></div><div class="grid" style="margin:12px 0 0">${[1,2,3,4,5,6,7].map(j=>{const d=k*7+j;return`<button class="dot ${S.done[d]?"done":d==n?"cur":d>n?"lock":""}" data-a="open" data-d="${d}" ${d>n?"disabled":""}>${S.done[d]?"✓":d}</button>`}).join("")}</div></div>`}).join("")+`<button class="btn" data-a="goday">${count()<21?"CONTINUER AU JOUR "+n:"VOIR MON BILAN"}</button><button class="btn alt" data-a="editfond">Modifier mes fondations</button><button class="btn alt" data-a="reset">${tmp.rs?"Oui, tout effacer (définitif)":"Recommencer à zéro"}</button><p style="color:var(--soft);font-size:13px;text-align:center;margin-top:18px">Ta progression est enregistrée sur cet appareil, dans ce navigateur.</p>`}
+
+function day(){const d=D,[t,i,x,a,q]=DAYS[d-1],ph=Math.floor((d-1)/7),done=S.done[d],n=next();
+const fo=S.fo[d]||[0,0,0,0,0],lab=FOUND.concat(F5[ph]);
+const gap=S.last&&count()<21&&(new Date(today())-new Date(S.last))/864e5>1&&d==n;
+let h=`<div class="top"><span>Jour ${d} / 21</span><span class="phase">${PH[ph]}</span></div><div class="bar"><b style="width:${count()/21*100}%"></b></div>`;
+if(gap)h+=`<div class="ban">Une pause n’annule rien. Ta progression est toujours là.<button class="btn" data-a="resume">JE REPRENDS AUJOURD’HUI 🤍</button></div>`;
+h+=`<div class="brand" style="margin-top:28px">JOUR ${d}</div><h2 style="font-size:38px;margin-top:6px">${t}</h2><div class="int">${i}</div><details class="more"><summary>En savoir plus</summary><p>${x}</p></details>`;
+let A="",B="",C="";A+=banners(d);if(d==12)A+=`<p class="hand">Pas pour plaire. Pour te reconnecter à toi.</p>`;
+if(d==21)A+=`<h3>Refais ton évaluation</h3>${sliders("f",S.fin||S.base)}`;
+{A+=`<h3>TON ACTION ÉCLAT DU JOUR</h3>${act(d)}${chips(d)}${acts(d)}`;}
+A+=tools(d);
+const QI=`<p style="margin:0 0 8px">${q}</p><textarea rows="4" data-k="ans" placeholder="Ma réponse…">${esc(S.ans[d])}</textarea>`,QB=[7,14,21].includes(d);
+const PQ=`<h3>MA PREUVE DU JOUR</h3><p style="margin:0 0 8px;color:var(--soft)">Ce que j’ai fait aujourd’hui et dont je peux être fière :</p><textarea rows="2" data-k="proof" placeholder="Ma preuve en une ligne…">${esc(S.proof[d])}</textarea>`+(QB?`<h3>MA QUESTION DU JOUR</h3>`+QI:`<details class="more" ${S.ans[d]?"open":""}><summary>Aller plus loin (facultatif)</summary>${QI}</details>`);
+if(d==21){C+=compare()+proofs()+BILAN.map(([k,l])=>`<h3>${l}</h3><textarea rows="3" data-k="b${k}" placeholder="Ma réponse…">${esc(S.ans["b"+k]!==undefined?S.ans["b"+k]:(k=="d"?[0,1,2,3,4].map(i=>S.ans["t19_"+i]||"").filter(Boolean).join("\n"):k=="e"&&S.pick[20]!=null?EX[19][S.pick[20]]:""))}</textarea>`).join("")+`<h3>Ma décision, et sa date</h3><input type="date" data-k="date" value="${S.date}">`}
+const nF=fo.filter(Boolean).length;B+=`<div class="socle"><div class="brand" style="color:#e2c78f">MA BASE DE CHAQUE JOUR</div><div class="st">Mes fondations 🤍</div><div class="bar" style="margin:12px 0 8px;background:rgba(255,246,234,.2)"><b style="width:${nF*20}%"></b></div><p style="margin:0 0 8px;font-size:13px;opacity:.8">${nF} sur 5 · à ta mesure, sans obligation</p>${lab.map((l,k)=>chk("fo",fo[k],l+(S.fd[k]?` <small style="opacity:.7">— ${esc(S.fd[k])}</small>`:""),`data-k="${k}"`)).join("")}</div>`;
+C+=PQ;
+C+=done?`<div class="big">Journée validée 🤍</div>${d<21?`<p class="hand" style="text-align:center;font-size:24px;margin:10px 0">Demain : ${DAYS[d][0]} →</p>`:""}<button class="chip" data-a="unval">Annuler la validation</button>`+(d<21&&d<n?`<button class="btn alt" data-a="open" data-d="${n}">ALLER AU JOUR ${n}</button>`:"")
+:(tmp.w==d?`<p class="hand" style="text-align:center;margin:14px 0 0">Termine ton action (étape 1) et écris ta preuve en une ligne 🤍</p>`:"")+`<button class="btn" data-a="val">${chk0()} Je valide ma journée 🤍</button>`;
+function chk0(){return""}
+if(d==21&&done)C+=`<div class="card"><p class="hand" style="font-size:26px;margin:0">Bravo. Tu peux compter sur toi.</p></div>`;
+const st=tmp.sd===d?tmp.st:0,dots=`<div class="steps">${["Action","Fondations","Réflexion"].map((x,i)=>`<button class="stp ${i==st?"on":""} ${i<st?"ok":""}" data-a="step" data-k="${i}"><i>${i<st?"✓":i+1}</i>${x}</button>`).join("")}</div>`;
+const nxt=st==0?`<button class="btn" data-a="done0">J’AI FAIT MON ACTION →</button>`:st==1?`<button class="btn" data-a="step" data-k="2">CONTINUER →</button>`:"";
+app.innerHTML=h+dots+[A,B,C][st]+nxt;}
+
+const habs=d=>{const hb=S.hb[d]||[0,0];let h="";[[8,"t7_1","Ma 2e action ÉCLAT"],[15,"t14_0","Ma 3e action ÉCLAT"]].forEach(([from,key,lab],k)=>{if(d>=from){const v=S.ans[key];h+=v?chk("hab",hb[k],lab+" : "+esc(v),`data-k="${k}"`):`<div class="card"><p style="margin:0 0 8px">${lab} : écris l’action que tu gardes chaque jour</p><textarea rows="2" data-k="${key}" placeholder="Mon action à garder…"></textarea></div>`}});return h};
+const acts=d=>{const a1=chk("act",S.ch[d]&&S.ch[d].act,d>=8?"Action du jour : "+ACT[d-1][0]:"J’ai fait mon action ÉCLAT"),h=habs(d);return d>=8?`<div class="card" style="margin:14px 0"><div class="brand" style="margin-bottom:4px">TES ${d>=15?3:2} ACTIONS ÉCLAT</div>${a1}${h}</div>`:""};
+const chips=d=>{const L=EX[d-1];return L.length?`<p style="color:var(--soft);font-size:14px;margin:12px 0 4px">Besoin d’idées ? Touche pour choisir :</p><div>${L.map((x,k)=>`<button class="chip ${S.pick[d]===k?"on":""}" data-a="pick" data-k="${k}">${x}</button>`).join("")}</div>`:""};
+const timeBox=d=>{const t=S.time[d]||S.time[1]||"";let l="";if(t){const [h,m]=t.split(":").map(Number),e=new Date(0,0,0,h,m+30),z=n=>String(n).padStart(2,"0"),D0=today().replace(/-/g,"");l=`<a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent("Challenge ÉCLAT — Jour "+d+" : "+DAYS[d-1][0])}&dates=${D0}T${z(h)}${z(m)}00/${D0}T${z(e.getHours())}${z(e.getMinutes())}00${d==1?"&recur=RRULE%3AFREQ%3DDAILY%3BCOUNT%3D21":""}" target="_blank" rel="noopener" style="color:var(--gold)">${d==1?"Ajouter les 21 jours à mon agenda":"Ajouter à mon agenda"}</a>`}
+return`<div class="card" style="display:flex;gap:12px;align-items:center;flex-wrap:wrap"><label for="tm">${d==1?"Mon créneau quotidien :":"Je le fais à quelle heure ?"}</label><input id="tm" type="time" data-k="time" value="${t}" style="width:auto">${l}</div>`};
+const tools=d=>{let h="";if(d==3){const e=S.en[3]||[5,5];h+=`<h3>MON ÉNERGIE</h3>`+["Avant","Après"].map((l,i)=>`<div class="sl"><label>${l}<b id="en${i}">${e[i]}</b></label><input type="range" min="1" max="10" value="${e[i]}" data-en="${i}" aria-label="Énergie ${l}"></div>`).join("")}
+if(d==7||d==14){const key=d==7?"t7_1":"t14_0";h+=`<h3>CE QUE JE GARDE JUSQU’AU JOUR 21</h3><p style="margin:0 0 6px;color:var(--soft)">Elle s’ajoutera à tes actions ÉCLAT dès ${d==7?"demain":"le Jour 15"}.</p><div>${KEEP.map(x=>`<button class="chip" data-a="keep" data-k="${key}" data-v="${x}">${x}</button>`).join("")}</div><textarea rows="2" data-k="${key}" placeholder="Mon action à garder…" style="margin-top:8px">${esc(S.ans[key])}</textarea>`}
+if(TOOLS[d])h+=`<h3>MON OUTIL</h3>`+TOOLS[d].map(([l,r],i)=>`<label style="font-size:14px;color:var(--soft)">${l}</label><textarea rows="${r}" data-k="t${d}_${i}" style="margin-bottom:10px">${esc(S.ans["t"+d+"_"+i])}</textarea>`).join("");return h};
+const banners=d=>{let h="";if(d==8||d==15)h+=`<div class="ban"><b>Nouveau :</b> dès aujourd’hui, tu as ${d==8?"2 actions ÉCLAT : celle du jour et celle que tu as choisi de garder":"3 actions ÉCLAT : celle du jour et les 2 que tu as choisies de garder"}.</div>`;if([7,14,21].includes(d)){let c=0;for(let j=d-6;j<=d;j++)c+=(S.fo[j]||[]).filter(Boolean).length;h+=`<div class="ban">${S.ans.t1_1?`Ton intention du Jour 1 : <b>${esc(S.ans.t1_1)}</b><br>`:""}<small>Fondations cette semaine : ${c} cases cochées sur 35.</small></div>`}
+
+if(d==14&&S.ans.t1_0)h+=`<div class="ban">Au Jour 1, tu as réglé :<br><small>${esc(S.ans.t1_0).replace(/\n/g,"<br>")}</small></div>`;
+if(d==15&&S.proof[14])h+=`<div class="ban">Ta victoire du Jour 14 : <b>${esc(S.proof[14])}</b></div>`;return h};
+const proofs=()=>`<div class="card"><h3 style="margin-top:0">Mes 21 preuves</h3>${DAYS.map((x,i)=>S.proof[i+1]?`<p style="margin:8px 0"><b>Jour ${i+1}</b> — ${esc(S.proof[i+1])}</p>`:"").join("")||"<p>Tes preuves apparaîtront ici.</p>"}</div>`;
+function fond(){const L=[["Mon eau","Ex. : 1,5 litre par jour"],["Mon mouvement","Ex. : 15 minutes de marche"],["Mon moment pour moi","Ex. : 20 minutes rien que pour moi"],["Mon sommeil","Ex. : au lit avant 23h"]];app.innerHTML=`<div class="brand">TA BASE</div><h2 style="margin:8px 0">Pose tes fondations</h2><p style="color:var(--soft)">4 repères à ta mesure, que tu cocheras chaque jour. Aucune obligation : tu peux laisser vide.</p>`+L.map(([l,ph],i)=>`<div class="card" style="display:flex;gap:16px;align-items:center"><span class="hand" style="font-size:34px;width:22px">${i+1}</span><div style="flex:1"><label style="font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)">${l}</label><input type="text" data-f="${i}" value="${esc(S.fd[i])}" placeholder="${ph}" style="margin-top:6px;padding:10px 12px"></div></div>`).join("")+`<button class="btn" data-a="savefond">${count()>0?"ENREGISTRER":"CONTINUER"}</button>`}
+function intro(){app.innerHTML=`<div class="brand">BIENVENUE</div><h2 style="font-size:38px;margin:8px 0 10px">Voici ce que tu vas vivre</h2><p>21 jours, une action par jour, de 5 à 30 minutes. Pas de théorie : tu fais, tu coches, tu avances. Un vrai mouvement dans ta vraie vie.</p>
+<h3>Ce que tu vas y gagner</h3><div class="act"><ol>${["Un esprit plus léger : un espace rangé, une tête vidée","30 minutes récupérées, qui t’appartiennent","Des décisions prises : un non dit, ce que tu repoussais enfin fait","Un projet qui avance, pas seulement des idées","21 preuves écrites de ta main que tu peux compter sur toi"].map(x=>`<li><b>✦</b><span>${x}</span></li>`).join("")}</ol></div>
+<h3>Comment ça marche</h3>${[["Retrouver","Jours 1 à 7","ton énergie, ton espace, ton temps"],["Reprendre","Jours 8 à 14","tes priorités, tes choix, ton ambition"],["Rayonner","Jours 15 à 21","tes décisions, ton courage, ta suite"]].map(([a,b,c])=>`<div class="card" style="margin:10px 0"><span class="phase">${a}</span> <small style="color:var(--soft)">· ${b}</small><div>${c}</div></div>`).join("")}
+<div class="socle" style="margin-top:14px;padding-bottom:22px"><div class="st">Et chaque jour, tes fondations</div><p style="margin:6px 0 0;opacity:.85">Eau, mouvement, temps pour toi, sommeil : la base qui te porte, à ta mesure.</p></div>
+<p class="hand" style="text-align:center;margin:26px 0 0;font-size:24px">Ton objectif n’est pas d’être parfaite.<br>C’est de devenir intentionnelle.</p>
+<button class="btn" data-a="gobase">JE ME LANCE</button>`}
+function nav(){const n=$("nav");n.hidden=!S.started||!S.base;n.innerHTML=`<button class="${V=="day"?"on":""}" data-a="goday">Aujourd’hui</button><button class="${V=="path"?"on":""}" data-a="gopath">Mon parcours</button>`}
+function render(){window.scrollTo(0,0);({home,intro,base,fond,day,path}[V])();nav()}
+
+document.addEventListener("click",e=>{const el=e.target.closest("[data-a]");if(!el)return;const a=el.dataset.a,d=D,k=+el.dataset.k;
+if(a=="start"){S.started=1;V="base"}
+else if(a=="step"){tmp.sd=D;tmp.st=k}
+else if(a=="done0"){S.ch[d]=S.ch[d]||{};S.ch[d].act=1;tmp.w=0;tmp.sd=D;tmp.st=1}
+else if(a=="gobase")V="base";
+else if(a=="savebase"){S.base=tmp.b;S.fin=null;V="fond"}
+else if(a=="savefond"){V="day";D=Math.min(next(),21)}
+else if(a=="editfond"){V="fond"}
+else if(a=="goday"){V="day";D=Math.min(next(),21)}
+else if(a=="gopath"){V="path";tmp.rs=0}
+else if(a=="open"){D=+el.dataset.d;V="day"}
+else if(a=="hab"){S.hb[d]=S.hb[d]||[0,0];S.hb[d][k]=S.hb[d][k]?0:1}
+else if(a=="feel"){S.feel[d]=k}
+else if(a=="keep"){S.ans[el.dataset.k]=el.dataset.v}
+else if(a=="unval"){delete S.done[d]}
+else if(a=="pick"){if(d==8){const ks=["t8_0","t8_2","t8_4"],e=ks.find(x=>!S.ans[x]);if(e)S.ans[e]=EX[7][k]}else S.pick[d]=k;if(d==1)S.ans.t1_0=EX[0][k]}
+else if(a=="act"){tmp.w=0;S.ch[d]=S.ch[d]||{};const c=S.ch[d];c.act=!c.act}
+else if(a=="fo"){S.fo[d]=S.fo[d]||[0,0,0,0,0];S.fo[d][k]=S.fo[d][k]?0:1}
+else if(a=="resume"){S.last=today()}
+else if(a=="reset"){if(!tmp.rs)tmp.rs=1;else{S={started:0,base:null,fin:null,done:{},ans:{},proof:{},fo:{},ch:{},cm:{},pick:{},en:{},time:{},zone:"",hb:{},feel:{},fd:["","","",""],date:"",last:""};try{localStorage.removeItem(KEY)}catch(x){}tmp={};V="home";D=1}}
+else if(a=="val"){if(!(S.ch[d]&&S.ch[d].act&&(S.proof[d]||"").trim())){tmp.w=d;save();const y=scrollY;render();scrollTo(0,y);return}S.done[d]=1;S.last=today();save();const o=document.createElement("div");o.className="ov";o.setAttribute("aria-live","polite");o.innerHTML=`<div><svg viewBox="0 0 80 80"><circle cx="40" cy="40" r="32"/><path d="M26 41l10 10 19-21"/></svg><p class="hand" style="font-size:28px">${d==21?"Tu l’as fait.":MSG[d%MSG.length]+" · Jour "+d}</p></div>`;document.body.appendChild(o);setTimeout(()=>{o.remove();if(d<21)D=d+1;render()},1500);return}
+save();const y=scrollY,keep=!["start","editfond","step","done0","gobase","reset","savebase","savefond","goday","gopath","open"].includes(a);render();if(keep)scrollTo(0,y)});
+document.addEventListener("input",e=>{const t=e.target;if(t.dataset.s){const i=+t.dataset.i;$("v-"+t.dataset.s+i).textContent=t.value;if(t.dataset.s=="b")tmp.b[i]=+t.value;else{S.fin=S.fin||S.base.slice();S.fin[i]=+t.value;save()}return}
+if(t.dataset.f){S.fd[+t.dataset.f]=t.value;save();return}
+if(t.dataset.en){S.en[D]=S.en[D]||[5,5];S.en[D][+t.dataset.en]=+t.value;$("en"+t.dataset.en).textContent=t.value;save();return}
+const k=t.dataset.k;if(!k)return;if(k=="ans")S.ans[D]=t.value;else if(k=="proof")S.proof[D]=t.value;else if(k=="date")S.date=t.value;else if(k=="time")S.time[D]=t.value;else S.ans[k]=t.value;save()});
+document.addEventListener("change",e=>{if(e.target.dataset.s=="f"||e.target.dataset.k=="time"){S.fin=S.fin||S.base.slice();const y=scrollY;render();scrollTo(0,y)}});
+render();
+</script></body></html>
